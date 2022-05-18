@@ -2,6 +2,7 @@ package filer;
 
 import javax.print.attribute.standard.ReferenceUriSchemesSupported;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,22 +16,23 @@ public class FilUtil {
      * @return max værdien i en fil med heltal
      * @throws IOException
      */
-    public static int max(String filename) throws IOException{
+    public static int max(String filename) throws IOException {
         Scanner in = new Scanner(new File(filename));
-        int j = 0;
+        int max = 0;
         try {
             while (in.hasNext()){
                 int k = in.nextInt();
-                if (k > j){
-                    j = k;
+                if (k > max){
+                    max = k;
                 }
             }
         }catch (InputMismatchException ie){
-            System.out.println(ie.getMessage());
+//            System.out.println(ie.getMessage());
+            throw new RuntimeException("Der er noget i filen der ikke er et tal", ie);
         }finally {
             in.close();
         }
-        return j;
+        return max;
     }
 
     /**
@@ -42,12 +44,12 @@ public class FilUtil {
 
     public static int min(String filename) throws IOException{
         Scanner in = new Scanner(new File(filename));
-        int j = in.nextInt();
+        int min = Integer.MAX_VALUE;
         try {
             while (in.hasNext()){
                 int k = in.nextInt();
-                if (k < j){
-                    j = k;
+                if (k < min){
+                    min = k;
                 }
             }
         }catch (InputMismatchException ie){
@@ -55,7 +57,7 @@ public class FilUtil {
         }finally {
             in.close();
         }
-        return j;
+        return min;
     }
 
     /**
